@@ -5,6 +5,8 @@ Just a simple script to export a list of mods to a valid manifest file so I can 
 You have to option to either create a new manifest file or update an existing one. The list has to be in the same format as the list exported by r2modman.
 ## TODO:
 - [*] Add functionality to export a text file of mods to a manifest file
+- [] Automatic generation of README
+- [] Automatic generation of CHANGELOG
 - [] Add manifest validation with thunderstores API
 - [] Add readme validation with thunderstores API
 - [] Add uploading of manifest and other files directly to thunderstore 
