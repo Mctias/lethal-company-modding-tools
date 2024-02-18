@@ -51,12 +51,12 @@ def separate_semver(list):
     return name_semver_dict
 
 def generate_new_mod_dict(installed_mods, new_mods):
-    result_mod_list = {}
     for mod in new_mods:
         if mod in installed_mods:
             # Compare semvers and see if which is newer
             if version.parse(new_mods.get(mod)) > version.parse(installed_mods.get(mod)):
-                result_mod_list.update({mod: new_mods.get(mod)})
+                print(f"Updating {mod} {installed_mods.get(mod)} -> {new_mods.get(mod)}.")
+                installed_mods.update({mod: new_mods.get(mod)})
             elif version.parse(new_mods.get(mod)) < version.parse(installed_mods.get(mod)):
                 print(f"{mod} already has a newer version installed {installed_mods.get(mod)}. Trying to install {new_mods.get(mod)}. Keeping newest.")
             else:
@@ -101,9 +101,12 @@ def query_yes_no(question, default="yes"):
 def write_mods_to_manifest(manifest_file, mods_dict):
     with open(manifest_file, 'r') as file:
         data = json.load(file)
+        modpack_name = data["name"]
         if "dependencies" not in data:
             data["dependencies"] = []
         for name, semver in mods_dict.items():
+            if modpack_name in name:
+                continue
             data["dependencies"].append(f"{name}-{semver}")
 
     with open(manifest_file, 'w') as file:
