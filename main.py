@@ -3,6 +3,7 @@ import sys
 import json
 from src import ModValidator, FileSelector
 from src.mod_manager import ModManager, InvalidModStringError
+from src.api_client import ApiClient
 
 def query_yes_no(question, default="yes"):
     """Ask a yes/no question via raw_input() and return their answer.
@@ -36,6 +37,9 @@ def query_yes_no(question, default="yes"):
 
 
 if __name__ == '__main__':
+    api = ApiClient()
+
+    api.validate_manifest_with_api("test")
     input_filename = FileSelector.select_file("Select input file", filetypes=(("Text File", "*.txt"),))
     if input_filename is not None:
         print(f"Selected input file {input_filename}")
