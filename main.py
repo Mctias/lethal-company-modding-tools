@@ -1,7 +1,7 @@
 
 import sys
 import json
-from src import ModValidator, FileSelector
+from src import ModValidator, FileSelector, Helpers
 from src.mod_manager import ModManager, InvalidModStringError
 
 def query_yes_no(question, default="yes"):
@@ -81,6 +81,18 @@ if __name__ == '__main__':
         manifest_filename = FileSelector.select_file("Select manifest file", filetypes=(("Json File", "*.json"),))
         if manifest_filename is not None:
             print(f"Selected input file {manifest_filename}")
+            previous_version_number = Helpers.get_value_from_json(manifest_filename, "version_number")
+            version_number_input = input("Is this a major, minor or patch update (M, m, p)? :")
+            if version_number_input == "M":
+                new_version_number = Helpers.increment_major_version(previous_version_number)
+            elif version_number_input == "m":
+                new_version_number = Helpers.increment_minor_version(previous_version_number)
+            elif version_number_input == "p":
+                new_version_number = Helpers.increment_patch_version(previous_version_number)
+            else:
+                print("Wrong semver input, please slect M for major, m for minor and p for patch")
+                sys.exit(1)
+            Helpers.update_json_value(manifest_filename, "version_number", new_version_number)
         else:
             print("File selection canceled by user")
             sys.exit(1)
